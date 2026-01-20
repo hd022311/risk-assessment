@@ -27,33 +27,17 @@
     </div>
 
     <div id="hero" class="hidden min-h-screen flex flex-col items-center justify-center p-6 text-center gradient-main text-white">
-        <div class="mb-4">
-            <p class="text-2xl font-bold text-slate-300">富邦俊德</p>
-            <p class="text-lg text-slate-400">您的家族資產守護者</p>
-        </div>
-        <div class="mb-6 inline-block px-6 py-2 bg-red-500/20 rounded-full border border-red-500/50">
-            <span class="text-red-400 font-bold text-lg tracking-widest uppercase">⏱️ 快速風險評估</span>
-        </div>
-        <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
-            您好，<span id="user-greeting" class="text-red-500">貴賓</span><br>
-            只需 <span class="text-yellow-400">60 秒</span><br>
-            掌握您的家族財富安全
-        </h1>
-        <p class="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl leading-relaxed">
-            辛苦一輩子的資產，最後是「留愛」還是「留債」？<br>
-            <span class="text-white border-b-2 border-red-500">立即進行 10 題核心檢測，了解您的傳承地雷。</span>
-        </p>
-        <button onclick="startQuiz()" class="bg-red-600 hover:bg-red-700 text-white px-16 py-6 rounded-xl text-3xl font-black shadow-2xl transition-all transform hover:scale-105">
-            開始檢測
-        </button>
+        <div class="mb-4"><p class="text-2xl font-bold text-slate-300">富邦俊德</p><p class="text-lg text-slate-400">您的家族資產守護者</p></div>
+        <div class="mb-6 inline-block px-6 py-2 bg-red-500/20 rounded-full border border-red-500/50"><span class="text-red-400 font-bold text-lg tracking-widest uppercase">⏱️ 快速風險評估</span></div>
+        <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight">您好，<span id="user-greeting" class="text-red-500">貴賓</span><br>只需 <span class="text-yellow-400">60 秒</span><br>掌握您的家族財富安全</h1>
+        <p class="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl leading-relaxed">辛苦一輩子的資產，最後是「留愛」還是「留債」？<br><span class="text-white border-b-2 border-red-500">立即進行 10 題核心檢測，了解您的傳承地雷。</span></p>
+        <button onclick="startQuiz()" class="bg-red-600 hover:bg-red-700 text-white px-16 py-6 rounded-xl text-3xl font-black shadow-2xl transition-all transform hover:scale-105">開始檢測</button>
     </div>
 
     <div id="quiz-container" class="hidden min-h-screen py-12 px-4 max-w-4xl mx-auto">
         <div class="mb-10 text-center">
             <span id="step-indicator" class="text-red-600 font-black text-2xl font-mono">01 / 10</span>
-            <div class="w-full bg-slate-200 rounded-full h-4 mt-4 overflow-hidden">
-                <div id="progress-bar" class="bg-red-600 h-full transition-all duration-500" style="width: 10%"></div>
-            </div>
+            <div class="w-full bg-slate-200 rounded-full h-4 mt-4 overflow-hidden"><div id="progress-bar" class="bg-red-600 h-full transition-all duration-500" style="width: 10%"></div></div>
         </div>
         <div id="question-card" class="glass-card p-10 md:p-16 rounded-3xl shadow-2xl border border-white animate__animated">
             <div id="category-tag" class="text-lg font-bold text-red-500 mb-4 tracking-widest uppercase border-b-2 border-red-100 inline-block">法律風險</div>
@@ -75,38 +59,32 @@
                 <div id="risk-badge" class="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg">分析中...</div>
                 <p id="risk-desc" class="text-left text-slate-700 leading-relaxed text-xl font-medium bg-slate-50 p-6 rounded-2xl"></p>
             </div>
-            <div class="lg:col-span-7 bg-white p-10 rounded-3xl shadow-xl">
-                <h3 class="font-bold text-2xl mb-8">📊 四大維度風險分析</h3>
-                <canvas id="riskChart"></canvas>
-            </div>
+            <div class="lg:col-span-7 bg-white p-10 rounded-3xl shadow-xl"><h3 class="font-bold text-2xl mb-8">📊 四大維度風險分析</h3><canvas id="riskChart"></canvas></div>
         </div>
         <div class="mt-16 text-center border-t-2 border-slate-100 pt-12">
             <p class="text-slate-700 text-3xl font-black mb-4">富邦俊德</p>
             <p class="text-slate-500 text-xl mb-8 font-bold italic">您的家族資產守護者</p>
-            <a href="https://line.me/ti/p/@hd022311" target="_blank" class="inline-block bg-red-600 text-white px-16 py-5 rounded-2xl font-black text-2xl shadow-2xl hover:bg-red-700 transition-all">預約 1對1 專業諮詢</a>
+            <a href="https://line.me/R/ti/p/@hd022311" onclick="trackClick()" target="_blank" class="inline-block bg-red-600 text-white px-16 py-5 rounded-2xl font-black text-2xl shadow-2xl hover:bg-red-700 transition-all">預約 1對1 專業諮詢</a>
         </div>
     </div>
 
     <script>
-        let userName = "貴賓";
-        const liffId = "2008902145-CBzFiJo3"; // ⚠️ 已填入您的 LIFF ID
+        let userName = "貴賓", currentStep = 0, totalScore = 0, userAnswers = [], lastLevel = "";
+        let catScores = { "法律風險": 0, "資產配置": 0, "稅務負擔": 0, "家庭和諧": 0 };
+        const liffId = "2008902145-CBzFiJo3";
 
         async function initLiff() {
             try {
                 await liff.init({ liffId: liffId });
-                if (!liff.isLoggedIn()) {
-                    liff.login();
-                } else {
+                if (!liff.isLoggedIn()) { liff.login(); } 
+                else {
                     const profile = await liff.getProfile();
                     userName = profile.displayName;
                     document.getElementById('user-greeting').innerText = userName;
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('hero').classList.remove('hidden');
                 }
-            } catch (e) {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('hero').classList.remove('hidden');
-            }
+            } catch (e) { document.getElementById('loading').classList.add('hidden'); document.getElementById('hero').classList.remove('hidden'); }
         }
         window.onload = initLiff;
 
@@ -123,14 +101,7 @@
             { category: "稅務負擔", q: "隱性負債與保證責任？", options: ["無任何負債", "少量負債", "中等還款中", "負債比高", "高額負債/保證"], scores: [1,2,3,4,5] }
         ];
 
-        let currentStep = 0, totalScore = 0, userAnswers = [];
-        let catScores = { "法律風險": 0, "資產配置": 0, "稅務負擔": 0, "家庭和諧": 0 };
-
-        function startQuiz() {
-            document.getElementById('hero').classList.add('hidden');
-            document.getElementById('quiz-container').classList.remove('hidden');
-            showQuestion();
-        }
+        function startQuiz() { document.getElementById('hero').classList.add('hidden'); document.getElementById('quiz-container').classList.remove('hidden'); showQuestion(); }
 
         function showQuestion() {
             const q = questions[currentStep];
@@ -158,19 +129,16 @@
         }
 
         function finishQuiz() {
-            document.getElementById('quiz-container').classList.add('hidden');
-            document.getElementById('result-page').classList.remove('hidden');
-            document.getElementById('display-name').innerText = userName;
-            document.getElementById('score-display').innerText = totalScore;
-            let level = "";
-            const badge = document.getElementById('risk-badge'), desc = document.getElementById('risk-desc'), border = document.getElementById('status-border');
+            document.getElementById('quiz-container').classList.add('hidden'); document.getElementById('result-page').classList.remove('hidden');
+            document.getElementById('display-name').innerText = userName; document.getElementById('score-display').innerText = totalScore;
+            let level = ""; const badge = document.getElementById('risk-badge'), desc = document.getElementById('risk-desc'), border = document.getElementById('status-border');
             if(totalScore <= 20) { level="低風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-emerald-500"; border.style.borderColor="#10b981"; desc.innerText="資產傳承架構穩健，風險較低。建議定期複檢法規變動。"; }
             else if(totalScore <= 30) { level="中低風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-blue-500"; border.style.borderColor="#3b82f6"; desc.innerText="已有基本規劃，但部分細節仍有法律或稅務隱憂。"; }
             else if(totalScore <= 40) { level="中高風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-orange-500"; border.style.borderColor="#f97316"; desc.innerText="警告！資產架構存在漏洞，容易引發遺產稅爭議或分配糾紛。"; }
             else { level="高度危機"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-red-600"; border.style.borderColor="#dc2626"; desc.innerText="高度危機！極度缺乏法律防禦，可能面臨嚴重的繼承爭議。"; }
-            badge.innerText = level;
-            initChart();
-            sendToForm(userName, totalScore, level, userAnswers);
+            badge.innerText = level; lastLevel = level;
+            initChart(); 
+            sendToForm(userName, totalScore, level, userAnswers, "尚未點擊");
         }
 
         function initChart() {
@@ -181,31 +149,26 @@
                     labels: ['稅務負擔', '法律風險', '資產配置', '家庭和諧'],
                     datasets: [{
                         data: [catScores['稅務負擔'], catScores['法律風險'], catScores['資產配置'], catScores['家庭和諧']],
-                        backgroundColor: 'rgba(220, 38, 38, 0.15)',
-                        borderColor: 'rgb(220, 38, 38)',
-                        pointRadius: 6
+                        backgroundColor: 'rgba(220, 38, 38, 0.15)', borderColor: 'rgb(220, 38, 38)', pointRadius: 6
                     }]
                 },
                 options: { scales: { r: { min: 0, max: 15, pointLabels: { font: { size: 18, weight: 'bold' } } } }, plugins: { legend: { display: false } } }
             });
         }
 
-        function sendToForm(name, score, level, ans) {
+        function trackClick() {
+            sendToForm(userName, totalScore, lastLevel, userAnswers, "是！已點擊預約");
+        }
+
+        function sendToForm(name, score, level, ans, clicked) {
             const formID = "1FAIpQLSe8EsQpwdNm7qgKG3hceNoFFQkqeH4GsfrFfa2LSHWH9bgh9g";
             const formData = new URLSearchParams();
             formData.append("entry.971217626", name);
-            formData.append("entry.633037987", ans[0]);
-            formData.append("entry.1831916720", ans[1]);
-            formData.append("entry.1839695038", ans[2]);
-            formData.append("entry.1304028661", ans[3]);
-            formData.append("entry.1174048833", ans[4]);
-            formData.append("entry.1468704162", ans[5]);
-            formData.append("entry.1568346374", ans[6]);
-            formData.append("entry.1971063395", ans[7]);
-            formData.append("entry.1375223568", ans[8]);
-            formData.append("entry.1919892895", ans[9]);
-            formData.append("entry.2100896180", score);
-            formData.append("entry.747483575", level);
+            formData.append("entry.633037987", ans[0]); formData.append("entry.1831916720", ans[1]); formData.append("entry.1839695038", ans[2]);
+            formData.append("entry.1304028661", ans[3]); formData.append("entry.1174048833", ans[4]); formData.append("entry.1468704162", ans[5]);
+            formData.append("entry.1568346374", ans[6]); formData.append("entry.1971063395", ans[7]); formData.append("entry.1375223568", ans[8]);
+            formData.append("entry.1919892895", ans[9]); formData.append("entry.2100896180", score); formData.append("entry.747483575", level);
+            formData.append("entry.204713512", clicked);
             const formUrl = `https://docs.google.com/forms/d/e/${formID}/formResponse?${formData.toString()}&submit=Submit`;
             fetch(formUrl, { method: "POST", mode: "no-cors" });
         }
