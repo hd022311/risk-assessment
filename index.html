@@ -34,23 +34,18 @@
         <div class="mb-6 inline-block px-6 py-2 bg-red-500/20 rounded-full border border-red-500/50">
             <span class="text-red-400 font-bold text-lg tracking-widest uppercase">⏱️ 快速風險評估</span>
         </div>
-        
         <h1 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
             您好，<span id="user-greeting" class="text-red-500">貴賓</span><br>
             只需 <span class="text-yellow-400">60 秒</span><br>
             掌握您的家族財富安全
         </h1>
-        
         <p class="text-xl md:text-2xl text-slate-400 mb-12 max-w-2xl leading-relaxed">
             辛苦一輩子的資產，最後是「留愛」還是「留債」？<br>
             <span class="text-white border-b-2 border-red-500">立即進行 10 題核心檢測，了解您的傳承地雷。</span>
         </p>
-
         <button onclick="startQuiz()" class="bg-red-600 hover:bg-red-700 text-white px-16 py-6 rounded-xl text-3xl font-black shadow-2xl transition-all transform hover:scale-105">
             開始檢測
         </button>
-        
-        <p class="mt-8 text-slate-500 text-sm">測驗結果將由專業顧問 富邦俊德 為您守護</p>
     </div>
 
     <div id="quiz-container" class="hidden min-h-screen py-12 px-4 max-w-4xl mx-auto">
@@ -88,15 +83,14 @@
         <div class="mt-16 text-center border-t-2 border-slate-100 pt-12">
             <p class="text-slate-700 text-3xl font-black mb-4">富邦俊德</p>
             <p class="text-slate-500 text-xl mb-8 font-bold italic">您的家族資產守護者</p>
-            <a href="你的LINE連結" target="_blank" class="inline-block bg-red-600 text-white px-16 py-5 rounded-2xl font-black text-2xl shadow-2xl hover:bg-red-700 transition-all">預約 1對1 專業諮詢</a>
+            <a href="https://line.me/ti/p/你的ID" target="_blank" class="inline-block bg-red-600 text-white px-16 py-5 rounded-2xl font-black text-2xl shadow-2xl hover:bg-red-700 transition-all">預約 1對1 專業諮詢</a>
         </div>
     </div>
 
     <script>
         let userName = "貴賓";
-        const liffId = "你的_LIFF_ID"; // ⚠️ 請在此處填入您的 LIFF ID
+        const liffId = "2008902145-CBzFiJo3"; // ⚠️ 已填入您的 LIFF ID
 
-        // --- 以下邏輯與 ID 對接保持不變 ---
         async function initLiff() {
             try {
                 await liff.init({ liffId: liffId });
@@ -129,9 +123,7 @@
             { category: "稅務負擔", q: "隱性負債與保證責任？", options: ["無任何負債", "少量負債", "中等還款中", "負債比高", "高額負債/保證"], scores: [1,2,3,4,5] }
         ];
 
-        let currentStep = 0;
-        let totalScore = 0;
-        let userAnswers = [];
+        let currentStep = 0, totalScore = 0, userAnswers = [];
         let catScores = { "法律風險": 0, "資產配置": 0, "稅務負擔": 0, "家庭和諧": 0 };
 
         function startQuiz() {
@@ -146,11 +138,8 @@
             document.getElementById('category-tag').innerText = q.category;
             document.getElementById('question-text').innerText = q.q;
             document.getElementById('progress-bar').style.width = `${((currentStep + 1) / questions.length) * 100}%`;
-            
             const hintEl = document.getElementById('sub-hint');
-            if(q.hint) { hintEl.innerText = q.hint; hintEl.classList.remove('hidden'); }
-            else { hintEl.classList.add('hidden'); }
-
+            if(q.hint) { hintEl.innerText = q.hint; hintEl.classList.remove('hidden'); } else { hintEl.classList.add('hidden'); }
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
             q.options.forEach((opt, idx) => {
@@ -162,8 +151,7 @@
                     catScores[q.category] += q.scores[idx];
                     totalScore += q.scores[idx];
                     currentStep++;
-                    if(currentStep < questions.length) showQuestion();
-                    else finishQuiz();
+                    if(currentStep < questions.length) showQuestion(); else finishQuiz();
                 };
                 grid.appendChild(btn);
             });
@@ -174,18 +162,13 @@
             document.getElementById('result-page').classList.remove('hidden');
             document.getElementById('display-name').innerText = userName;
             document.getElementById('score-display').innerText = totalScore;
-            
             let level = "";
-            const badge = document.getElementById('risk-badge');
-            const desc = document.getElementById('risk-desc');
-            const border = document.getElementById('status-border');
-
-            if(totalScore <= 20) { level="低風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-emerald-500"; border.style.borderColor="#10b981"; desc.innerText="資產傳承架構穩健，風險較低。建議定期複檢法規變動即可。"; }
-            else if(totalScore <= 30) { level="中低風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-blue-500"; border.style.borderColor="#3b82f6"; desc.innerText="已有基本規劃，但部分項目如流動性或產權細節仍有隱憂。"; }
+            const badge = document.getElementById('risk-badge'), desc = document.getElementById('risk-desc'), border = document.getElementById('status-border');
+            if(totalScore <= 20) { level="低風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-emerald-500"; border.style.borderColor="#10b981"; desc.innerText="資產傳承架構穩健，風險較低。建議定期複檢法規變動。"; }
+            else if(totalScore <= 30) { level="中低風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-blue-500"; border.style.borderColor="#3b82f6"; desc.innerText="已有基本規劃，但部分細節仍有法律或稅務隱憂。"; }
             else if(totalScore <= 40) { level="中高風險"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-orange-500"; border.style.borderColor="#f97316"; desc.innerText="警告！資產架構存在漏洞，容易引發遺產稅爭議或分配糾紛。"; }
-            else { level="高度危機"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-red-600"; border.style.borderColor="#dc2626"; desc.innerText="高度危機！極度缺乏法律防禦，可能面臨嚴重的繼承爭議，建議立即諮詢專業人士。"; }
+            else { level="高度危機"; badge.className="inline-block px-8 py-3 rounded-xl text-white font-bold text-2xl mb-8 shadow-lg bg-red-600"; border.style.borderColor="#dc2626"; desc.innerText="高度危機！極度缺乏法律防禦，可能面臨嚴重的繼承爭議。"; }
             badge.innerText = level;
-
             initChart();
             sendToForm(userName, totalScore, level, userAnswers);
         }
@@ -223,7 +206,6 @@
             formData.append("entry.1919892895", ans[9]);
             formData.append("entry.2100896180", score);
             formData.append("entry.747483575", level);
-
             const formUrl = `https://docs.google.com/forms/d/e/${formID}/formResponse?${formData.toString()}&submit=Submit`;
             fetch(formUrl, { method: "POST", mode: "no-cors" });
         }
